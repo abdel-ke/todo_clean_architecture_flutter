@@ -12,51 +12,58 @@ class UpdateDeleteForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // two inputs has the data of the todo
-            TextField(
-              controller: titleController..text = todo.title,
-              decoration: const InputDecoration(
-                labelText: 'Title',
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // two inputs has the data of the todo
+          TextField(
+            controller: titleController..text = todo.title,
+            decoration: const InputDecoration(
+              labelText: 'Title',
+            ),
+          ),
+          TextField(
+            controller: descriptionController..text = todo.description,
+            decoration: const InputDecoration(
+              labelText: 'Description',
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  todo.title = titleController.text;
+                  todo.description = descriptionController.text;
+                  BlocProvider.of<TodoBloc>(context)
+                      .add(UpdateTodoEvent(todo: todo, isDone: todo.isDone));
+                  // final updatedTodo = TodoEntity(
+                  //   title: titleController.text,
+                  //   description: descriptionController.text,
+                  //   isDone: todo.isDone,
+                  // );
+                  // BlocProvider.of<TodoBloc>(context)
+                  //     .add(UpdateTodoEvent(todo: updatedTodo, isDone: updatedTodo.isDone));
+                  // Navigator.pop(context);
+                },
+                child: const Text('Update'),
               ),
-            ),
-            TextField(
-              controller: descriptionController..text = todo.description,
-              decoration: const InputDecoration(
-                labelText: 'Description',
+              ElevatedButton(
+                onPressed: () {
+                  BlocProvider.of<TodoBloc>(context)
+                      .add(DeleteTodoEvent(todo: todo));
+                  Navigator.pop(context);
+                },
+                child: const Text('Delete'),
               ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    todo.title = titleController.text;
-                    todo.description = descriptionController.text;
-                    BlocProvider.of<TodoBloc>(context)
-                        .add(UpdateTodoEvent(todo: todo, isDone: todo.isDone));
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Update'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    BlocProvider.of<TodoBloc>(context)
-                        .add(DeleteTodoEvent(todo: todo));
-                        Navigator.pop(context);
-                  },
-                  child: const Text('Delete'),
-                ),
-              ],
-            )
-          ],
-        ),
+            ],
+          )
+        ],
+      ),
     );
   }
 }

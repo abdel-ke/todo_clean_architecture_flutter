@@ -48,7 +48,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
               message: 'other failure from deletTodo event');
       }
     }, (_) {
-      // add(GetAllTodosEvent());
+      add(GetAllTodosEvent());
       return DeletedState();
     }));
   }
@@ -69,7 +69,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
         }
       }, (_) {
         debugPrint('UpdateTodoEvent updated');
-        // add(GetAllTodosEvent());
+        add(GetAllTodosEvent());
         return UpdatedState();
       }),
     );

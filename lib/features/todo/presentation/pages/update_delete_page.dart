@@ -20,7 +20,12 @@ class UpdateDeletePage extends StatelessWidget {
 
   BlocConsumer<TodoBloc, TodoState> _buildBlocConsumer() {
     return BlocConsumer<TodoBloc, TodoState>(
-      builder: (context, state) {
+      builder: (context, TodoState state) {
+        if (state is ErrorState) {
+          return Center(
+            child: Text(state.message),
+          );
+        }
         debugPrint('builder state is ${state.runtimeType}');
         return _builderBlocConsumer(state);
       },
@@ -30,20 +35,43 @@ class UpdateDeletePage extends StatelessWidget {
     );
   }
 
-  void _listenerBlocConsumer(TodoState state, BuildContext context) {
+  void _listenerBlocConsumer(TodoState state, BuildContext context) async {
     debugPrint('listener state is ${state.runtimeType}');
     switch (state.runtimeType) {
-      case UpdatedState:
-        const SnackBar(
-          backgroundColor: Colors.green,
-          content: Text(
-            'Todo updated',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+      case ErrorState:
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.redAccent,
+            content: Text(
+              (state as ErrorState).message,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+            ),
           ),
         );
-        
+        // Navigator.pop(context);
+        BlocProvider.of<TodoBloc>(context).add(GetAllTodosEvent());
+        break;
+      case UpdatedState:
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Colors.green,
+            content: Text(
+              'Todo updated',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+            ),
+            duration: Duration(milliseconds: 1500),
+          ),
+        );
+        await Future.delayed(const Duration(seconds: 2));
+        Navigator.pop(context);
         break;
       case DeletedState:
         ScaffoldMessenger.of(context).showSnackBar(
@@ -59,7 +87,8 @@ class UpdateDeletePage extends StatelessWidget {
             ),
           ),
         );
-        // Navigator.pop(context);
+        Future.delayed(const Duration(milliseconds: 1500));
+        Navigator.pop(context);
         break;
       default:
         break;
@@ -74,8 +103,8 @@ class UpdateDeletePage extends StatelessWidget {
           child: CircularProgressIndicator(),
         );
       case ErrorState:
-        return const Center(
-          child: Text('ErrorState'),
+        return Center(
+          child: Text((state as ErrorState).message),
         );
       default: // LoadedState, UpdatedState
         return UpdateDeleteForm(todo: todo);

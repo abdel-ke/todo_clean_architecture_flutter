@@ -61,14 +61,19 @@ class TodoPage extends StatelessWidget {
   BlocBuilder<TodoBloc, TodoState> buildBody() {
     return BlocBuilder<TodoBloc, TodoState>(
       builder: (context, state) {
-        return _blocBuilder(state);
+        return _blocBuilder(context, state);
       },
     );
   }
 
-  Widget _blocBuilder(TodoState state) {
-    debugPrint('state is ${state.runtimeType}');
+  Widget _blocBuilder(BuildContext context, TodoState state) {
+    debugPrint('_blocBuilder state is ${state.runtimeType}');
     switch (state.runtimeType) {
+      case DeletedState:
+      BlocProvider.of<TodoBloc>(context).add(GetAllTodosEvent());
+        return const Center(
+          child: Text('Deleted'),
+        );
       case LoadingState:
         return const Center(
           child: CircularProgressIndicator(),
@@ -77,12 +82,16 @@ class TodoPage extends StatelessWidget {
         debugPrint('LoadedState called');
         return TodoList(todos: (state as LoadedState).todo);
       case ErrorState:
-        return const Center(
-          child: Text('Error'),
+        return Center(
+          child: Text((state as ErrorState).message),
         );
       case AddedState:
         return const Center(
           child: Text('Added'),
+        );
+      case UpdatedState:
+        return const Center(
+          child: Text('Updated'),
         );
       default:
         return const Center(
