@@ -1,0 +1,15 @@
+- title & body
+- features
+    - domain
+        - entity
+        - repository
+        - usecase
+    - data
+        - model
+        - repository
+        - datasource
+    - presentation
+        - bloc
+        - pages
+        - widgests
+
