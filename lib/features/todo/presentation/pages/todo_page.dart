@@ -79,7 +79,6 @@ class TodoPage extends StatelessWidget {
           child: CircularProgressIndicator(),
         );
       case LoadedState:
-        debugPrint('LoadedState called');
         return TodoList(todos: (state as LoadedState).todo);
       case ErrorState:
         return Center(

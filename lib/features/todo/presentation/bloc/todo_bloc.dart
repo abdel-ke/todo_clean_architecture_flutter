@@ -54,12 +54,10 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
   }
 
   void _updateTodoEventImpl(UpdateTodoEvent event, Emitter<TodoState> emit) {
-    debugPrint('UpdateTodoEvent: ${event.todo}');
     emit(LoadingState());
     final failureOeAddTodo = updateTodoUseCase(event.todo, event.isDone);
     emit(
       failureOeAddTodo.fold((failure) {
-        debugPrint('error UpdateTodoEvent ');
         switch (failure.runtimeType) {
           case UpdateTodoFailure _:
             return const ErrorState(message: 'failure to update this one');
@@ -68,7 +66,6 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
                 message: 'other failure from updateTodo event');
         }
       }, (_) {
-        debugPrint('UpdateTodoEvent updated');
         add(GetAllTodosEvent());
         return UpdatedState();
       }),

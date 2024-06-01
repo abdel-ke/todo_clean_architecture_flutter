@@ -21,12 +21,6 @@ class UpdateDeletePage extends StatelessWidget {
   BlocConsumer<TodoBloc, TodoState> _buildBlocConsumer() {
     return BlocConsumer<TodoBloc, TodoState>(
       builder: (context, TodoState state) {
-        if (state is ErrorState) {
-          return Center(
-            child: Text(state.message),
-          );
-        }
-        debugPrint('builder state is ${state.runtimeType}');
         return _builderBlocConsumer(state);
       },
       listener: (context, state) {
