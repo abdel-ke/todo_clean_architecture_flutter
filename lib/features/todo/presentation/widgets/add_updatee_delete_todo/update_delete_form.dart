@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/features/todo/domain/entities/todo_entity.dart';
-import 'package:todo/features/todo/presentation/bloc/todo_bloc.dart';
+import 'package:todo/features/todo/presentation/bloc/add_update_delete_todo/todo_bloc.dart';
 
 class UpdateDeleteForm extends StatelessWidget {
   final TodoEntity todo;
@@ -39,7 +39,7 @@ class UpdateDeleteForm extends StatelessWidget {
                 onPressed: () {
                   todo.title = titleController.text;
                   todo.description = descriptionController.text;
-                  BlocProvider.of<TodoBloc>(context)
+                  BlocProvider.of<AddUpdateDeleteBloc>(context)
                       .add(UpdateTodoEvent(todo: todo, isDone: todo.isDone));
                   // final updatedTodo = TodoEntity(
                   //   title: titleController.text,
@@ -48,15 +48,13 @@ class UpdateDeleteForm extends StatelessWidget {
                   // );
                   // BlocProvider.of<TodoBloc>(context)
                   //     .add(UpdateTodoEvent(todo: updatedTodo, isDone: updatedTodo.isDone));
-                  // Navigator.pop(context);
                 },
                 child: const Text('Update'),
               ),
               ElevatedButton(
                 onPressed: () {
-                  BlocProvider.of<TodoBloc>(context)
+                  BlocProvider.of<AddUpdateDeleteBloc>(context)
                       .add(DeleteTodoEvent(todo: todo));
-                  Navigator.pop(context);
                 },
                 child: const Text('Delete'),
               ),

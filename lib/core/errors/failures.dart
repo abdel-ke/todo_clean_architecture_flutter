@@ -12,6 +12,11 @@ class UpdateTodoFailure extends Failure {
   List<Object?> get props => [];
 }
 
+class CheckTodoFailure extends Failure {
+  @override
+  List<Object?> get props => [];
+}
+
 class EmptyTodoFailure extends Failure {
   @override
   List<Object?> get props => [];

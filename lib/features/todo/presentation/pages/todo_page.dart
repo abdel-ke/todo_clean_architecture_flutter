@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo/features/todo/presentation/bloc/todo_bloc.dart';
+import 'package:todo/core/widgets/loading_widget.dart';
+import 'package:todo/features/todo/presentation/bloc/todos/todo_bloc.dart';
 import 'package:todo/features/todo/presentation/pages/add_todo.dart';
 import 'package:todo/features/todo/presentation/widgets/todo_pages/todo_list.dart';
 
@@ -69,28 +70,15 @@ class TodoPage extends StatelessWidget {
   Widget _blocBuilder(BuildContext context, TodoState state) {
     debugPrint('_blocBuilder state is ${state.runtimeType}');
     switch (state.runtimeType) {
-      case DeletedState:
-      BlocProvider.of<TodoBloc>(context).add(GetAllTodosEvent());
-        return const Center(
-          child: Text('Deleted'),
-        );
       case LoadingState:
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
+        return const LoadingWidget();
       case LoadedState:
         return TodoList(todos: (state as LoadedState).todo);
+      case CheckMarkState:
+        return TodoList(todos: (state as CheckMarkState).todo);
       case ErrorState:
         return Center(
           child: Text((state as ErrorState).message),
-        );
-      case AddedState:
-        return const Center(
-          child: Text('Added'),
-        );
-      case UpdatedState:
-        return const Center(
-          child: Text('Updated'),
         );
       default:
         return const Center(

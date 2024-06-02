@@ -11,14 +11,6 @@ class TodoInitialState extends TodoState {}
 
 class LoadingState extends TodoState {}
 
-class LoadExistState extends TodoState {}
-
-class AddedState extends TodoState {}
-
-class UpdatedState extends TodoState {}
-
-class DeletedState extends TodoState {}
-
 class LoadedState extends TodoState {
   final List<TodoEntity> todo;
 
@@ -27,6 +19,17 @@ class LoadedState extends TodoState {
   @override
   List<Object> get props => [todo];
 }
+
+class CheckMarkState extends TodoState {
+  final List<TodoEntity> todo;
+
+  const CheckMarkState({required this.todo});
+
+  @override
+  List<Object> get props => [todo];
+}
+
+// class CheckMarkState extends TodoState {}
 
 class ErrorState extends TodoState {
   final String message;

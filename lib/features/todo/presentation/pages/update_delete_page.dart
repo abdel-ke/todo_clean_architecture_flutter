@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/core/utils/snackbar.dart';
+import 'package:todo/core/widgets/loading_widget.dart';
 import 'package:todo/features/todo/domain/entities/todo_entity.dart';
-import 'package:todo/features/todo/presentation/bloc/todo_bloc.dart';
+import 'package:todo/features/todo/presentation/bloc/add_update_delete_todo/todo_bloc.dart';
+import 'package:todo/features/todo/presentation/bloc/todos/todo_bloc.dart';
 import 'package:todo/features/todo/presentation/pages/todo_page.dart';
 import 'package:todo/features/todo/presentation/widgets/add_updatee_delete_todo/update_delete_form.dart';
 
@@ -20,9 +22,9 @@ class UpdateDeletePage extends StatelessWidget {
     );
   }
 
-  BlocConsumer<TodoBloc, TodoState> _buildBlocConsumer() {
-    return BlocConsumer<TodoBloc, TodoState>(
-      builder: (context, TodoState state) {
+  BlocConsumer<AddUpdateDeleteBloc, AddUpdateDeleteState> _buildBlocConsumer() {
+    return BlocConsumer<AddUpdateDeleteBloc, AddUpdateDeleteState>(
+      builder: (context, AddUpdateDeleteState state) {
         return _builderBlocConsumer(state);
       },
       listener: (context, state) {
@@ -31,43 +33,46 @@ class UpdateDeletePage extends StatelessWidget {
     );
   }
 
-  void _listenerBlocConsumer(TodoState state, BuildContext context) async {
+  void _listenerBlocConsumer(
+      AddUpdateDeleteState state, BuildContext context) async {
     debugPrint('listener state is ${state.runtimeType}');
     switch (state.runtimeType) {
-      case ErrorState:
-        showSnackBar(context, (state as ErrorState).message, Colors.redAccent);
-        // Navigator.pop(context);
-        BlocProvider.of<TodoBloc>(context).add(GetAllTodosEvent());
+      case ErrorAddUpdateDeleteState:
+        showSnackBar(context, (state as ErrorAddUpdateDeleteState).message,
+            Colors.redAccent);
         break;
       case UpdatedState:
         showSnackBar(context, 'Todo updated', Colors.green);
-        // await Future.delayed(const Duration(seconds: 2));
-        // Navigator.pop(context);
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return const TodoPage();
-        }));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return const TodoPage();
+            },
+          ),
+        );
         break;
       case DeletedState:
         showSnackBar(context, 'Todo deleted successfully', Colors.green);
-        // Future.delayed(const Duration(milliseconds: 1500));
-        Navigator.pop(context);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return const TodoPage();
+            },
+          ),
+        );
         break;
       default:
         break;
     }
   }
 
-  Widget _builderBlocConsumer(TodoState state) {
+  Widget _builderBlocConsumer(AddUpdateDeleteState state) {
     debugPrint('builder state is ${state.runtimeType}');
     switch (state.runtimeType) {
-      case LoadingState:
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      case ErrorState:
-        return Center(
-          child: Text((state as ErrorState).message),
-        );
+      case LoadingAddUpdateDeleteState:
+        return const LoadingWidget();
       default: // LoadedState, UpdatedState
         return UpdateDeleteForm(todo: todo);
     }
