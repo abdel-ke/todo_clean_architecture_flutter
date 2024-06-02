@@ -10,9 +10,9 @@ class TodoRepositoryImpl implements TodoRepository {
   TodoRepositoryImpl({required this.localDatasource});
 
   @override
-  Either<Failure, List<TodoEntity>> getAllTodos() {
+  Future<Either<Failure, List<TodoEntity>> >getAllTodos() async {
     try {
-      final allTodo = localDatasource.getAllTodos();
+      final allTodo = await localDatasource.getAllTodos();
       return Right(allTodo);
     } catch (e) {
       return Left(AddTodoFailure());
@@ -20,9 +20,9 @@ class TodoRepositoryImpl implements TodoRepository {
   }
 
   @override
-  Either<Failure, Unit> addTodos(TodoEntity todo) {
+  Future<Either<Failure, Unit>> addTodos(TodoEntity todo) async {
     try {
-      final allTodo = localDatasource.addTodos(todo);
+      final allTodo = await localDatasource.addTodos(todo);
       return Right(allTodo);
     } catch (e) {
       return Left(AddTodoFailure());
@@ -30,9 +30,9 @@ class TodoRepositoryImpl implements TodoRepository {
   }
 
   @override
-  Either<Failure, Unit> updateTodos(TodoEntity todo, bool isDone) {
+  Future<Either<Failure, Unit>> updateTodos(TodoEntity todo, bool isDone) async {
     try {
-      final allTodo = localDatasource.updateTodos(todo, isDone);
+      final allTodo = await localDatasource.updateTodos(todo, isDone);
       return Right(allTodo);
     } catch (e) {
       return Left(UpdateTodoFailure());
@@ -40,9 +40,9 @@ class TodoRepositoryImpl implements TodoRepository {
   }
 
   @override
-  Either<Failure, Unit> deleteTodos(TodoEntity todo) {
+  Future<Either<Failure, Unit>> deleteTodos(TodoEntity todo) async {
     try {
-      final allTodo = localDatasource.deleteTodos(todo);
+      final allTodo = await localDatasource.deleteTodos(todo);
       return Right(allTodo);
     } catch (e) {
       return Left(UpdateTodoFailure());

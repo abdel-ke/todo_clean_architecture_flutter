@@ -10,7 +10,7 @@ class GetAllTodoUseCase {
     required this.repository,
   });
 
-  Either<Failure, List<TodoEntity>> call() {
+  Future<Either<Failure, List<TodoEntity>>> call() {
     return repository.getAllTodos();
   }
 }
@@ -22,7 +22,7 @@ class AddTodoUseCase {
     required this.repository,
   });
 
-  Either<Failure, Unit> call(TodoEntity todo) {
+  Future<Either<Failure, Unit>> call(TodoEntity todo) {
     return repository.addTodos(todo);
   }
 }
@@ -34,7 +34,7 @@ class UpdateTodoUseCase {
     required this.repository,
   });
 
-  Either<Failure, Unit> call(TodoEntity todo, bool isDone) {
+  Future<Either<Failure, Unit>> call(TodoEntity todo, bool isDone) {
     return repository.updateTodos(todo, isDone);
   }
 }
@@ -46,7 +46,7 @@ class DeleteTodoUseCase {
     required this.repository,
   });
 
-  Either<Failure, Unit> call(TodoEntity todo) {
+  Future<Either<Failure, Unit>> call(TodoEntity todo) {
     return repository.deleteTodos(todo);
   }
 }

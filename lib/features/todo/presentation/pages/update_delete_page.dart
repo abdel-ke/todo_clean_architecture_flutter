@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo/core/utils/snackbar.dart';
 import 'package:todo/features/todo/domain/entities/todo_entity.dart';
 import 'package:todo/features/todo/presentation/bloc/todo_bloc.dart';
+import 'package:todo/features/todo/presentation/pages/todo_page.dart';
 import 'package:todo/features/todo/presentation/widgets/add_updatee_delete_todo/update_delete_form.dart';
 
 class UpdateDeletePage extends StatelessWidget {
@@ -33,55 +35,21 @@ class UpdateDeletePage extends StatelessWidget {
     debugPrint('listener state is ${state.runtimeType}');
     switch (state.runtimeType) {
       case ErrorState:
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Colors.redAccent,
-            content: Text(
-              (state as ErrorState).message,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-        );
+        showSnackBar(context, (state as ErrorState).message, Colors.redAccent);
         // Navigator.pop(context);
         BlocProvider.of<TodoBloc>(context).add(GetAllTodosEvent());
         break;
       case UpdatedState:
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.green,
-            content: Text(
-              'Todo updated',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
-            ),
-            duration: Duration(milliseconds: 1500),
-          ),
-        );
-        await Future.delayed(const Duration(seconds: 2));
-        Navigator.pop(context);
+        showSnackBar(context, 'Todo updated', Colors.green);
+        // await Future.delayed(const Duration(seconds: 2));
+        // Navigator.pop(context);
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return const TodoPage();
+        }));
         break;
       case DeletedState:
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.green,
-            content: Text(
-              'Todo deleted successfully',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-        );
-        Future.delayed(const Duration(milliseconds: 1500));
+        showSnackBar(context, 'Todo deleted successfully', Colors.green);
+        // Future.delayed(const Duration(milliseconds: 1500));
         Navigator.pop(context);
         break;
       default:

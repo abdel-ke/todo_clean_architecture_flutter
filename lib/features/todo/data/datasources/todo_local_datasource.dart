@@ -4,10 +4,10 @@ import 'package:todo/core/errors/failures.dart';
 import 'package:todo/features/todo/domain/entities/todo_entity.dart';
 
 abstract class TodoLocalDatasource {
-  List<TodoEntity> getAllTodos();
-  Unit addTodos(TodoEntity todo);
-  Unit updateTodos(TodoEntity todo, bool isDone);
-  Unit deleteTodos(TodoEntity todo);
+  Future<List<TodoEntity>> getAllTodos();
+  Future<Unit> addTodos(TodoEntity todo);
+  Future<Unit> updateTodos(TodoEntity todo, bool isDone);
+  Future<Unit> deleteTodos(TodoEntity todo);
 }
 
 final List<TodoEntity> data = [
@@ -19,7 +19,8 @@ final List<TodoEntity> data = [
 
 class TodoLocalDatasourceImpl implements TodoLocalDatasource {
   @override
-  Unit addTodos(TodoEntity todo) {
+  Future<Unit> addTodos(TodoEntity todo) async {
+    await Future.delayed(const Duration(seconds: 1));
     try {
       data.add(todo);
       return unit;
@@ -29,7 +30,8 @@ class TodoLocalDatasourceImpl implements TodoLocalDatasource {
   }
 
   @override
-  Unit deleteTodos(TodoEntity todo) {
+  Future<Unit> deleteTodos(TodoEntity todo) async {
+    await Future.delayed(const Duration(seconds: 1));
     try {
       data.remove(todo);
       return unit;
@@ -39,7 +41,8 @@ class TodoLocalDatasourceImpl implements TodoLocalDatasource {
   }
 
   @override
-  List<TodoEntity> getAllTodos() {
+  Future<List<TodoEntity>> getAllTodos() async {
+    await Future.delayed(const Duration(seconds: 1));
     if (data.isNotEmpty) {
       return data;
     }
@@ -47,7 +50,8 @@ class TodoLocalDatasourceImpl implements TodoLocalDatasource {
   }
 
   @override
-  Unit updateTodos(TodoEntity todo, bool isDone) {
+  Future<Unit> updateTodos(TodoEntity todo, bool isDone) async {
+    await Future.delayed(const Duration(seconds: 1));
     try {
       data[data.indexWhere((element) => element.id == todo.id)] = todo;
       return unit;
