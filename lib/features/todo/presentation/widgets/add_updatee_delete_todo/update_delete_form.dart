@@ -37,17 +37,11 @@ class UpdateDeleteForm extends StatelessWidget {
             children: [
               ElevatedButton(
                 onPressed: () {
-                  todo.title = titleController.text;
-                  todo.description = descriptionController.text;
-                  BlocProvider.of<AddUpdateDeleteBloc>(context)
-                      .add(UpdateTodoEvent(todo: todo, isDone: todo.isDone));
-                  // final updatedTodo = TodoEntity(
-                  //   title: titleController.text,
-                  //   description: descriptionController.text,
-                  //   isDone: todo.isDone,
-                  // );
-                  // BlocProvider.of<TodoBloc>(context)
-                  //     .add(UpdateTodoEvent(todo: updatedTodo, isDone: updatedTodo.isDone));
+                  BlocProvider.of<AddUpdateDeleteBloc>(context).add(
+                      UpdateTodoEvent(todo: todo, data: {
+                    'title': titleController.text,
+                    'description': descriptionController.text
+                  }));
                 },
                 child: const Text('Update'),
               ),

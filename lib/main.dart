@@ -26,11 +26,6 @@ class MainApp extends StatelessWidget {
                 localDatasource: TodoLocalDatasourceImpl(),
               ),
             ),
-            checkMarkTodoUseCase: CheckMarkTodoUseCase(
-              repository: TodoRepositoryImpl(
-                localDatasource: TodoLocalDatasourceImpl(),
-              ),
-            ),
           )..add(GetAllTodosEvent()),
         ),
         // add update delete todos
@@ -42,11 +37,6 @@ class MainApp extends StatelessWidget {
               ),
             ),
             updateTodoUseCase: UpdateTodoUseCase(
-              repository: TodoRepositoryImpl(
-                localDatasource: TodoLocalDatasourceImpl(),
-              ),
-            ),
-            checkMarkTodoUseCase: CheckMarkTodoUseCase(
               repository: TodoRepositoryImpl(
                 localDatasource: TodoLocalDatasourceImpl(),
               ),

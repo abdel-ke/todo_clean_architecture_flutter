@@ -20,17 +20,6 @@ class LoadedState extends TodoState {
   List<Object> get props => [todo];
 }
 
-class CheckMarkState extends TodoState {
-  final List<TodoEntity> todo;
-
-  const CheckMarkState({required this.todo});
-
-  @override
-  List<Object> get props => [todo];
-}
-
-// class CheckMarkState extends TodoState {}
-
 class ErrorState extends TodoState {
   final String message;
   const ErrorState({required this.message});

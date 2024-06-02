@@ -8,13 +8,3 @@ abstract class TodoEvent extends Equatable {
 }
 
 class GetAllTodosEvent extends TodoEvent {}
-
-class CheckMarkEvent extends TodoEvent {
-  final TodoEntity todo;
-  final bool isDone;
-
-  const CheckMarkEvent({required this.todo, required this.isDone});
-
-  @override
-  List<Object> get props => [todo, isDone];
-}

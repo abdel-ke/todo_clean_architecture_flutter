@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
 import 'package:todo/core/errors/exception.dart';
 import 'package:todo/core/errors/failures.dart';
 import 'package:todo/features/todo/domain/entities/todo_entity.dart';
@@ -7,8 +6,7 @@ import 'package:todo/features/todo/domain/entities/todo_entity.dart';
 abstract class TodoLocalDatasource {
   Future<List<TodoEntity>> getAllTodos();
   Future<Unit> addTodos(TodoEntity todo);
-  Future<Unit> updateTodos(TodoEntity todo);
-  Future<List<TodoEntity>> checkMarkTodo(TodoEntity todo, bool isDone);
+  Future<Unit> updateTodos(TodoEntity todo, Map<String, String> data);
   Future<Unit> deleteTodos(TodoEntity todo);
 }
 
@@ -41,10 +39,16 @@ class TodoLocalDatasourceImpl implements TodoLocalDatasource {
   }
 
   @override
-  Future<Unit> updateTodos(TodoEntity todo) async {
+  Future<Unit> updateTodos(TodoEntity todo, Map<String, String> dd) async {
     await Future.delayed(const Duration(seconds: 1));
     try {
-      data[data.indexWhere((element) => element.id == todo.id)] = todo;
+      final int index = data.indexWhere((element) => element.id == todo.id);
+      if (index != -1) {
+        data[index].title = dd['title']!;
+        data[index].description = dd['description']!;
+      } else {
+        throw UpdateTodoFailure();
+      }
       return unit;
       } on UpdateTodoException {
     // } catch (e) {
@@ -60,17 +64,6 @@ class TodoLocalDatasourceImpl implements TodoLocalDatasource {
       return unit;
     } on DeleteTodoException {
       throw DeleteTodoFailure();
-    }
-  }
-
-  @override
-  Future<List<TodoEntity>> checkMarkTodo(TodoEntity todo, bool isDone) async {
-    try {
-      todo.isDone = isDone;
-      data[data.indexWhere((element) => element.id == todo.id)] = todo;
-      return data;
-    } catch (e) {
-      throw CheckTodoFailure();
     }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/core/widgets/loading_widget.dart';
+import 'package:todo/features/todo/presentation/bloc/add_update_delete_todo/todo_bloc.dart';
 import 'package:todo/features/todo/presentation/bloc/todos/todo_bloc.dart';
 import 'package:todo/features/todo/presentation/pages/add_todo.dart';
 import 'package:todo/features/todo/presentation/widgets/todo_pages/todo_list.dart';
@@ -12,6 +13,9 @@ class TodoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Todo List'),
+        ),
         body: buildBody(),
         floatingActionButton: _buildFloatingActionButton(context),
       ),
@@ -43,14 +47,12 @@ class TodoPage extends StatelessWidget {
     return FloatingActionButton(
       heroTag: 'add',
       onPressed: () {
+        BlocProvider.of<AddUpdateDeleteBloc>(context).add(LoadingEvent());
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) {
-              return BlocProvider.value(
-                value: BlocProvider.of<TodoBloc>(context),
-                child: const AddTodoPage(),
-              );
+              return const AddTodoPage();
             },
           ),
         );
@@ -74,8 +76,6 @@ class TodoPage extends StatelessWidget {
         return const LoadingWidget();
       case LoadedState:
         return TodoList(todos: (state as LoadedState).todo);
-      case CheckMarkState:
-        return TodoList(todos: (state as CheckMarkState).todo);
       case ErrorState:
         return Center(
           child: Text((state as ErrorState).message),

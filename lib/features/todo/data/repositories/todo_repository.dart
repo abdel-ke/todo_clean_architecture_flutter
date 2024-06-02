@@ -30,22 +30,12 @@ class TodoRepositoryImpl implements TodoRepository {
   }
 
   @override
-  Future<Either<Failure, Unit>> updateTodos(TodoEntity todo) async {
+  Future<Either<Failure, Unit>> updateTodos(TodoEntity todo, Map<String, String> data) async {
     try {
-      final allTodo = await localDatasource.updateTodos(todo);
+      final allTodo = await localDatasource.updateTodos(todo, data);
       return Right(allTodo);
     } catch (e) {
       return Left(UpdateTodoFailure());
-    }
-  }
-
-  @override
-  Future<Either<Failure, List<TodoEntity>>> checkMarkTodo(TodoEntity todo, bool isDone) async {
-    try {
-      final allTodo = await localDatasource.checkMarkTodo(todo, isDone);
-      return Right(allTodo);
-    } catch (e) {
-      return Left(CheckTodoFailure());
     }
   }
 
@@ -55,7 +45,7 @@ class TodoRepositoryImpl implements TodoRepository {
       final allTodo = await localDatasource.deleteTodos(todo);
       return Right(allTodo);
     } catch (e) {
-      return Left(UpdateTodoFailure());
+      return Left(DeleteTodoFailure());
     }
   }
 }

@@ -34,20 +34,8 @@ class UpdateTodoUseCase {
     required this.repository,
   });
 
-  Future<Either<Failure, Unit>> call(TodoEntity todo) {
-    return repository.updateTodos(todo);
-  }
-}
-
-class CheckMarkTodoUseCase {
-  final TodoRepository repository;
-
-  CheckMarkTodoUseCase({
-    required this.repository,
-  });
-
-  Future<Either<Failure, List<TodoEntity>>> call(TodoEntity todo, bool isDone) {
-    return repository.checkMarkTodo(todo, isDone);
+  Future<Either<Failure, Unit>> call(TodoEntity todo, Map<String, String> data) {
+    return repository.updateTodos(todo, data);
   }
 }
 

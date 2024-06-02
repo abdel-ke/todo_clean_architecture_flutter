@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/core/utils/snackbar.dart';
 import 'package:todo/core/widgets/loading_widget.dart';
 import 'package:todo/core/widgets/my_button.dart';
+import 'package:todo/core/widgets/my_textfield.dart';
 import 'package:todo/features/todo/domain/entities/todo_entity.dart';
 import 'package:todo/features/todo/presentation/bloc/add_update_delete_todo/todo_bloc.dart';
 import 'package:todo/features/todo/presentation/pages/todo_page.dart';
@@ -16,32 +17,29 @@ class AddTodoForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<AddUpdateDeleteBloc, AddUpdateDeleteState>(
       builder: (context, state) {
-        debugPrint('state is ${state.runtimeType}');
+        debugPrint('AddTodoForm builder state is ${state.runtimeType}');
+        if (state is AddUpdateDeleteTodoInitial) {
+          return _addForm();
+        }
         if (state is LoadingAddUpdateDeleteState) {
           return const LoadingWidget();
         }
         if (state is AddedState) {
           return _addForm();
         }
-        return _addForm();
-        // return const LoadingWidget();
+        return const LoadingWidget();
       },
       listener: (context, state) {
+        debugPrint('AddTodoForm listener state is ${state.runtimeType}');
         if (state is ErrorAddUpdateDeleteState) {
           showSnackBar(context, state.message, Colors.red);
         }
         if (state is AddedState) {
           showSnackBar(context, 'Todo Aded Successfully', Colors.green);
-          Navigator.push(
+          Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(
-              builder: (context) {
-                return BlocProvider.value(
-                  value: BlocProvider.of<AddUpdateDeleteBloc>(context),
-                  child: const TodoPage(),
-                );
-              },
-            ),
+            MaterialPageRoute(builder: (_) => const TodoPage()),
+            (route) => false,
           );
         }
       },
@@ -54,18 +52,8 @@ class AddTodoForm extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          TextField(
-            controller: titleController,
-            decoration: const InputDecoration(
-              labelText: 'Title',
-            ),
-          ),
-          TextField(
-            controller: descriptionController,
-            decoration: const InputDecoration(
-              labelText: 'Description',
-            ),
-          ),
+          MyTextField(controller: titleController, hintText: 'Title'),
+          MyTextField(controller: descriptionController, hintText: 'Description'),
           const SizedBox(
             height: 20,
           ),

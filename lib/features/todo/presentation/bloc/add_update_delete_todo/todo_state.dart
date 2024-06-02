@@ -15,8 +15,6 @@ class AddedState extends AddUpdateDeleteState {}
 
 class UpdatedState extends AddUpdateDeleteState {}
 
-// class CheckMarkState extends AddUpdateDeleteState {}
-
 class DeletedState extends AddUpdateDeleteState {}
 
 class ErrorAddUpdateDeleteState extends AddUpdateDeleteState {

@@ -10,12 +10,22 @@ class MyTextField extends StatelessWidget {
     super.key,
     required this.controller,
     required this.hintText,
-    required this.margin,
-    required this.onSubmitted,
+    this.margin = 0.0,
+    this.onSubmitted,
   });
 
   @override
   Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: margin),
+      child: TextField(
+        controller: controller,
+        onSubmitted: onSubmitted,
+        decoration: const InputDecoration(
+          labelText: 'Title',
+        ),
+      ),
+    );
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: margin),
       child: TextField(
@@ -24,10 +34,12 @@ class MyTextField extends StatelessWidget {
         onTapOutside: (focusNode) => FocusScope.of(context).unfocus(),
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+            borderSide:
+                BorderSide(color: Theme.of(context).colorScheme.primary),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+            borderSide:
+                BorderSide(color: Theme.of(context).colorScheme.primary),
           ),
           fillColor: Theme.of(context).colorScheme.primary,
           filled: true,

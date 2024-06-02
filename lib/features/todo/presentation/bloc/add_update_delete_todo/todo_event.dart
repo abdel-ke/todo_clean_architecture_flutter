@@ -7,6 +7,7 @@ abstract class AddUpdateDeleteEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class LoadingEvent extends AddUpdateDeleteEvent {}
 class AddTodoEvent extends AddUpdateDeleteEvent {
   final TodoEntity todo;
 
@@ -18,23 +19,13 @@ class AddTodoEvent extends AddUpdateDeleteEvent {
 
 class UpdateTodoEvent extends AddUpdateDeleteEvent {
   final TodoEntity todo;
-  final bool isDone;
+  final Map<String, String> data;
 
-  const UpdateTodoEvent({required this.todo, required this.isDone});
+  const UpdateTodoEvent({required this.todo, required this.data});
 
   @override
-  List<Object> get props => [todo, isDone];
+  List<Object> get props => [todo, data];
 }
-
-// class CheckMarkEvent extends AddUpdateDeleteEvent {
-//   final TodoEntity todo;
-//   final bool isDone;
-
-//   const CheckMarkEvent({required this.todo, required this.isDone});
-
-//   @override
-//   List<Object> get props => [todo, isDone];
-// }
 
 class DeleteTodoEvent extends AddUpdateDeleteEvent {
   final TodoEntity todo;
